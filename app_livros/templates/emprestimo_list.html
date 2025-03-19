@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Página Inicial{% endblock %}
+
+{% block content %}
+        {% for emprestimo in emprestimos %}
+            <li>{{ emprestimo.livro.titulo }} - Emprestado em {{ emprestimo.data_emprestimo }}</li>
+        {% empty %}
+            <li>Você ainda não possui empréstimos.</li>
+        {% endfor %}
+{% endblock %}

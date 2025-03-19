@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Livros Disponíveis{% endblock %}
+
+{% block content %}
+    <h2>Lista de Livros</h2>
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Ano</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for livro in livros %}
+                <tr>
+                    <td>{{ livro.titulo }}</td>
+                    <td>{{ livro.autor }}</td>
+                    <td>{{ livro.ano_publicacao }}</td>
+                    <td>
+                        <a href="{% url 'emprestar_livro' livro.id %}" class="btn btn-primary btn-sm">Emprestar</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center">Nenhum livro disponível.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

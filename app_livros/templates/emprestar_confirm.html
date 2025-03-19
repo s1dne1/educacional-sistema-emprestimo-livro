@@ -1,0 +1,5 @@
+<p>Deseja realmente emprestar "{{ livro.titulo }}"?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirmar</button>
+</form>

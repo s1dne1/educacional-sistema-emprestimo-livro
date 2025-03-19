@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastrar Livro{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mt-4">Cadastrar Novo Livro</h2>
+    <form method="post" class="mt-3">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <label for="id_titulo" class="form-label">Título</label>
+                {{ form.titulo }}
+            </div>
+            <div class="col-md-6">
+                <label for="id_autor" class="form-label">Autor</label>
+                {{ form.autor }}
+            </div>
+            <div class="col-md-6">
+                <label for="id_editora" class="form-label">Editora</label>
+                {{ form.editora }}
+            </div>
+            <div class="col-md-3">
+                <label for="id_ano_publicacao" class="form-label">Ano</label>
+                {{ form.ano_publicacao }}
+            </div>
+            <div class="col-md-3">
+                <label for="id_isbn" class="form-label">ISBN</label>
+                {{ form.isbn }}
+            </div>
+            <div class="col-md-6">
+                <label for="id_genero" class="form-label">Gênero</label>
+                {{ form.genero }}
+            </div>
+            <div class="col-md-3">
+                <label for="id_num_paginas" class="form-label">Páginas</label>
+                {{ form.num_paginas }}
+            </div>
+            <div class="col-md-3">
+                <label for="id_data_aquisicao" class="form-label">Data de Aquisição</label>
+                {{ form.data_aquisicao }}
+            </div>
+            <div class="col-md-3">
+                <label for="id_quantidade" class="form-label">Quantidade</label>
+                {{ form.quantidade }}
+            </div>
+            <div class="col-md-3">
+                <label for="id_disponivel" class="form-label">Disponível?</label>
+                {{ form.disponivel }}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success mt-3">Salvar</button>
+        <a href="{% url 'lista_livros' %}" class="btn btn-secondary mt-3">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
