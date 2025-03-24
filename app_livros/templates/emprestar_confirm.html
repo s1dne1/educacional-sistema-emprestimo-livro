@@ -1,5 +1,39 @@
-<p>Deseja realmente emprestar "{{ livro.titulo }}"?</p>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Confirmar</button>
-</form>
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block title %}Emprestar Livro{% endblock %}
+{% block content %}
+
+<div class="container mt-4" style="width:30rem;">
+    <div class="card shadow"style="padding:10px;">
+    
+    <div class="card-header bg-primary text-white mb-2" >  
+        <h3>Empréstimo</strong></h3>
+    </div>      
+        <form method="post">
+            {% csrf_token %}
+
+             <!-- Card: Informações do Livro -->
+            <div class="card mb-4"style="padding:10px;">
+            <div class="card-header bg-light mb-4">
+               <strong>Confirmar empréstimo do livro <strong>{{ livro.titulo }} ?</strong>
+            </div>
+
+
+            <div class="mb-3">
+                <label for="id_leitor" class="form-label">Leitor</label>
+               {{ form.leitor |add_class:"select2" }} 
+                   <!-- opções -->
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="id_data_prevista_devolucao" class="form-label">Data prevista de devolução:</label>
+                {{ form.data_prevista_devolucao }}
+            </div>
+
+            <button type="submit" class="btn btn-success">Confirmar Empréstimo</button>
+            <a href="{% url 'lista_livros' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

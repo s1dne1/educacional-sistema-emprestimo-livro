@@ -1,5 +1,48 @@
-<p>Deseja devolver "{{ emprestimo.livro.titulo }}"?</p>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Confirmar</button>
-</form>
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Devolver Livro{% endblock %}
+
+{% block content %}
+<div class="container mt-4" style="width:30rem;">
+    <div class="card shadow" style="padding:10px;">
+    
+        <div class="card-header bg-primary text-white mb-2">
+            <h3>Devolução de Livro</h3>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="card mb-4" style="padding:10px;">
+                <div class="card-header bg-light mb-4">
+                    <strong>Confirmar devolução do livro <strong>{{ emprestimo.livro.titulo }}</strong>?</strong>
+                </div>
+
+                <!-- Avaliação do estado de conservação -->
+                <div class="mb-3">
+                    <label for="id_estado" class="form-label">Estado de Conservação</label>
+                    <select name="estado_conservacao" id="id_estado" class="form-select" required>
+                        <option value="">Selecione uma opção</option>
+                        <option value="ótimo">Ótimo</option>
+                        <option value="bom">Bom</option>
+                        <option value="regular">Regular</option>
+                        <option value="ruim">Ruim</option>
+                        <option value="danificado">Danificado</option>
+                    </select>
+                </div>
+
+                <!-- Comentário opcional -->
+                <div class="mb-3">
+                    <label for="id_comentario" class="form-label">Observações</label>
+                    <textarea name="comentario" id="id_comentario" rows="3" class="form-control" placeholder="Descreva qualquer observação relevante sobre a devolução ou o estado do livro..."></textarea>
+                </div>
+
+                <!-- Botões -->
+                <button type="submit" class="btn btn-success">Confirmar Devolução</button>
+                <a href="{% url 'lista_livros' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

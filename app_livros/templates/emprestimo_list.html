@@ -3,9 +3,123 @@
 {% block title %}Página Inicial{% endblock %}
 
 {% block content %}
-        {% for emprestimo in emprestimos %}
-            <li>{{ emprestimo.livro.titulo }} - Emprestado em {{ emprestimo.data_emprestimo }}</li>
-        {% empty %}
-            <li>Você ainda não possui empréstimos.</li>
-        {% endfor %}
+
+    <h2>Empréstimos</h2>
+    <form method="get" class="row g-2 mb-4">
+        <div class="col-md-4">
+            <input type="text" name="busca" value="" class="form-control" placeholder="Buscar por título, autor ou pessoa">
+        </div>
+        <div class="col-md-4">
+            <select name="statusprazo" class="form-select">
+                <option value="">Todos os status</option>
+                <option value="noprazo" {% if statusprazo == 'noprazo' %}selected{% endif %}>No prazo</option>
+                <option value="avencer" {% if statusprazo == 'avencer' %}selected{% endif %}>A vencer</option>
+                <option value="vencido" {% if statusprazo == 'vencido' %}selected{% endif %}>Vencidos</option>
+                <option value="devolvido" {% if statusprazo == 'devolvido' %}selected{% endif %}>Devolvidos</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </div>
+    </form>
+    
+    
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>usuário</th>
+                <th>Leitor</th>
+                <th>Título Livro</th>
+                <th>Data Emprestimo</th>
+                <th>Dt Prev Devolução</th> 
+                <th>Dt Devolução</th>
+                <th>Estado Conservação</th>   
+                <th>Status</th>      
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for emprestimo in page_obj %}
+            <tr>
+                <td>{{ emprestimo.usuario }}</td>
+                <td>{{ emprestimo.leitor.nome}}</td>
+                <td>{{ emprestimo.livro.titulo }}</td>
+                <td>{{ emprestimo.data_emprestimo }}</td>
+                <td>{{ emprestimo.data_prevista_devolucao}}</td>   
+                
+                <td>
+                    {% if emprestimo.data_devolucao %}
+                        {{ emprestimo.data_devolucao }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                  {{ emprestimo.estado_conservacao }}
+              
+                  {% if emprestimo.observacoes_conservacao %}
+                      <!-- Botão que abre o modal -->
+                      <button type="button" class="btn btn-sm btn-info ms-2" data-bs-toggle="modal" data-bs-target="#modalAvaliacao{{ emprestimo.id }}">
+                          🔎
+                      </button>
+              
+                      <!-- Modal -->
+                      <div class="modal fade" id="modalAvaliacao{{ emprestimo.id }}" tabindex="-1" aria-labelledby="modalLabel{{ emprestimo.id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                              <h5 class="modal-title" id="modalLabel{{ emprestimo.id }}">Observação de Avaliação</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                            </div>
+                            <div class="modal-body">
+                              {{ emprestimo.observacoes_conservacao }}
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  {% endif %}
+              </td>
+                <td>
+                    {% if emprestimo.statusprazo == 'noprazo' %}✅ No prazo
+                    {% elif emprestimo.statusprazo == 'avencer' %}⚠️ A vencer
+                    {% elif emprestimo.statusprazo == 'vencido' %}❌ Vencido
+                    {% elif emprestimo.statusprazo == 'devolvido' %}📦 Devolvido
+                    {% endif %}
+                  </td>
+                
+            
+            </tr>
+            {% empty %}
+                <tr><td colspan="5">Nenhum empréstimo encontrado.</td></tr>
+            {% endfor %}
+        </tbody>
+        <nav aria-label="Navegação de páginas">
+            <ul class="pagination justify-content-center">
+              {% if page_obj.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ page_obj.previous_page_number }}&busca={{ busca }}&statusprazo={{ statusprazo }}">Anterior</a>
+                </li>
+              {% else %}
+                <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+              {% endif %}
+          
+              <li class="page-item disabled"><span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span></li>
+          
+              {% if page_obj.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ page_obj.next_page_number }}&busca={{ busca }}&statusprazo={{ statusprazo }}">Próxima</a>
+                </li>
+              {% else %}
+                <li class="page-item disabled"><span class="page-link">Próxima</span></li>
+              {% endif %}
+            </ul>
+          </nav>
+    </table>
 {% endblock %}
+
+
+       
+

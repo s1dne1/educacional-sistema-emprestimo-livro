@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastrar Leitor{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Cadastrar Novo Leitor</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Card: Informações Pessoais -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <strong>Informações do Leitor</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="id_nome" class="form-label">Nome</label>
+                                {{ form.nome }}
+                            </div>
+                            <div class="col-md-3">
+                                <label for="id_cpf" class="form-label">CPF</label>
+                                {{ form.cpf }}
+                            </div>
+                            <div class="col-md-3">
+                                <label for="id_telefone" class="form-label">Telefone</label>
+                                {{ form.telefone }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card: Dados Acadêmicos -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <strong>Dados Acadêmicos</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="id_turma" class="form-label">Turma</label>
+                                {{ form.turma }}
+                            </div>
+                            <div class="col-md-8">
+                                <label for="id_email" class="form-label">Email</label>
+                                {{ form.email }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botões -->
+                <div class="d-flex justify-content-start">
+                    <button type="submit" class="btn btn-success me-2">Salvar</button>
+                    <a href="{% url 'listar_leitores' %}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
