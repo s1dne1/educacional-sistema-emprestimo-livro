@@ -4,22 +4,68 @@ from django.utils import timezone
 from datetime import timedelta, date
 from django.db import models
 
+from django.db import models
+from django.core.exceptions import ValidationError
 
 class Livro(models.Model):
+    GENEROS_CHOICES = [
+        # Ficção
+        ('Romance', 'Romance'),
+        ('Aventura', 'Aventura'),
+        ('Fantasia', 'Fantasia'),
+        ('Ficção Científica', 'Ficção Científica'),
+        ('Distopia', 'Distopia'),
+        ('Suspense', 'Suspense'),
+        ('Mistério', 'Mistério'),
+        ('Terror', 'Terror'),
+        ('Policial', 'Policial'),
+        ('Drama', 'Drama'),
+        ('Humor', 'Humor'),
+        ('Realismo Mágico', 'Realismo Mágico'),
+
+        # Não Ficção
+        ('História', 'História'),
+        ('Filosofia', 'Filosofia'),
+        ('Psicologia', 'Psicologia'),
+        ('Sociologia', 'Sociologia'),
+        ('Política', 'Política'),
+        ('Economia', 'Economia'),
+        ('Religião', 'Religião'),
+        ('Espiritualidade', 'Espiritualidade'),
+        ('Educação', 'Educação'),
+        ('Autoajuda', 'Autoajuda'),
+        ('Negócios', 'Negócios'),
+        ('Marketing', 'Marketing'),
+        ('Tecnologia', 'Tecnologia'),
+        ('Ciência', 'Ciência'),
+        ('Saúde', 'Saúde'),
+        ('Meio Ambiente', 'Meio Ambiente'),
+        ('Direito', 'Direito'),
+
+        # Infantil / Juvenil
+        ('Infantil', 'Infantil'),
+        ('Infantojuvenil', 'Infantojuvenil'),
+        ('Conto de Fadas', 'Conto de Fadas'),
+        ('Fábulas', 'Fábulas'),
+
+        # Outros
+        ('Poesia', 'Poesia'),
+        ('Teatro', 'Teatro'),
+        ('HQ/Mangá', 'HQ / Mangá'),
+        ('Clássico', 'Clássico'),
+        ('Ensaio', 'Ensaio'),
+        ('Antologia', 'Antologia'),
+        ('Manual', 'Manual'),
+        ('Técnico', 'Técnico'),
+        ('Didático', 'Didático'),
+    ]
+
     titulo = models.CharField(max_length=200)
     autor = models.CharField(max_length=200)
     editora = models.CharField(max_length=100, blank=True, null=True)
     ano_publicacao = models.IntegerField()
     isbn = models.CharField(max_length=20, unique=True)
-    genero = models.CharField(max_length=100, choices=[
-        ('Ficção', 'Ficção'),
-        ('Não Ficção', 'Não Ficção'),
-        ('Romance', 'Romance'),
-        ('Suspense', 'Suspense'),
-        ('Aventura', 'Aventura'),
-        ('Ciência', 'Ciência'),
-        ('História', 'História'),
-    ], blank=True, null=True)
+    genero = models.CharField(max_length=100, choices=GENEROS_CHOICES, blank=True, null=True)
     num_paginas = models.IntegerField(blank=True, null=True)
     data_aquisicao = models.DateField(blank=True, null=True)
     descricao = models.TextField(blank=True, null=True)
@@ -34,8 +80,8 @@ class Livro(models.Model):
     def validate_unique(self, exclude=None):
         super().validate_unique(exclude)
         if Livro.objects.exclude(pk=self.pk).filter(isbn=self.isbn).exists():
-            from django.core.exceptions import ValidationError
             raise ValidationError({'isbn': 'Já existe um livro cadastrado com este ISBN.'})
+
 
 
 

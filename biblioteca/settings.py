@@ -79,12 +79,29 @@ WSGI_APPLICATION = 'biblioteca.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
+#banco anterior, alterado conforme premissa estabelecida ao projeto pela Faculdade.
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'biblioteca',  # ou o nome do banco que criou
+        'USER': 'root',
+        'PASSWORD': '',  # deixe vazio se for o padrão do Laragon
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
+
+
+
 
 
 # Password validation
